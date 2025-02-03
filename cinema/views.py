@@ -1,11 +1,11 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status, generics, mixins
+from rest_framework import status, generics, mixins, viewsets
 
 from django.shortcuts import get_object_or_404
 
-from cinema.models import Movie, Genre, Actor
-from cinema.serializers import MovieSerializer, GenreSerializer, ActorSerializer
+from cinema.models import Movie, Genre, Actor, CinemaHall
+from cinema.serializers import MovieSerializer, GenreSerializer, ActorSerializer, CinemaHallSerializer
 
 
 @api_view(["GET", "POST"])
@@ -116,3 +116,15 @@ class ActorDetail(
 
     def delete(self, request, *args, **kwargs) -> Response:
         return self.destroy(request, *args, **kwargs)
+
+
+class CinemaHallViewSet(
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin
+):
+    queryset = CinemaHall.objects.all()
+    serializer_class = CinemaHallSerializer
